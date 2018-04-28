@@ -1,11 +1,8 @@
 package CoZ;
 
-import graphics.TextEditor;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.Path2D;
 
 public class CoZ_GUI extends JFrame{
 
