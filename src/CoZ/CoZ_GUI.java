@@ -64,6 +64,8 @@ public class CoZ_GUI extends JFrame{
 
     }
 
+    private class veryClassNo {}//extends shelf
+
     private int fieldSize;
     private JTextArea field;
     private Line[] verticalLines;
