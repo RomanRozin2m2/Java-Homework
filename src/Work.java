@@ -21,7 +21,12 @@ public class Work {
          //   System.out.println(inp[h]);
         //}
         Game g = new Game(new RealPlayer(), new ComputerPlayer());
-        CoZ_GUI gui = new CoZ_GUI(3);
+        CoZ_GUI gui = new CoZ_GUI(15);
+
+        gui.setSomething(2, 2, CoZ_Node.ZERO);
+        gui.setSomething(4, 4, CoZ_Node.CROSS);
+
+        
         CoZ_Evolver ev = new CoZ_Evolver(50, 200, 20, true);
         //ev.evolve();
 

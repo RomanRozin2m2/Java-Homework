@@ -42,7 +42,69 @@ public class CoZ_GUI extends JFrame{
     private class Zero extends JComponent{
 
         public void paint(Graphics g){
-            g.fillOval(0, 0, this.getWidth(), this.getHeight());
+            //g.fillOval(0, 0, this.getWidth(), this.getHeight());
+            //g.fillRect(2, 2, getWidth()-3, getHeight()-3);
+
+
+            // Коэффициент k - на сколько должны быть шировкие линии у крестика
+            // маленикий k - тонкие линии
+            // большой k - толстые линии
+            double k = 0.2;
+
+            int startX = 2;
+            int startY = 2;
+            int endX = getWidth() - 3;
+            int endY = getWidth() - 3;
+
+            int width = endX - startX;
+            int height = endY - startY;
+
+
+            // Рисуем первый прямоугольник у крестика по этим 4-м точкам
+
+            /*
+            ____________________
+            |    1              |
+            |                   |
+            |4                  |
+            |                   |
+            |                  2|
+            |                   |
+            |______________3____|
+             */
+
+            Polygon p = new Polygon();
+
+            p.addPoint((int)(startX + width * k), startY);
+            p.addPoint(endX, (int)(endY - height * k));
+            p.addPoint((int)(endX - width * k), endY);
+            p.addPoint(startX, (int)(startY + height * k));
+
+            g.fillPolygon(p);
+
+
+            // Рисуем второй пямоугольник у крестика по этим 4-м точкам
+
+            /*
+            ____________________
+            |            1      |
+            |                   |
+            |                  2|
+            |                   |
+            |4                  |
+            |                   |
+            |_____3_____________|
+             */
+
+            p = new Polygon();
+
+            p.addPoint((int)(endX - width * k), startY);
+            p.addPoint(endX, (int)(startY + height * k));
+            p.addPoint((int)(startX + width * k), endY);
+            p.addPoint(startX, (int)(endY - height * k));
+
+            g.fillPolygon(p);
+
         }
 
         public Zero(int lineWidth, int lineHeight){
@@ -52,14 +114,20 @@ public class CoZ_GUI extends JFrame{
 
     }
 
-    private class Cross extends JTextArea{
+    private class Cross extends JComponent{
+
+        public void paint(Graphics g){
+            g.fillOval(2, 2, getWidth()-5, getHeight()-5);
+            g.setColor(new Color(238, 238, 238));
+            g.fillOval(5, 5, getWidth()-11, getHeight()-11);
+        }
 
         public Cross(int lineWidth, int lineHeight){
             setSize(lineWidth,  lineHeight);
-            setFont(new Font(Font.MONOSPACED, Font.PLAIN, 18));
-            setText("X");
+            //setFont(new Font(Font.MONOSPACED, Font.PLAIN, 18));
+            //setText("X");
             setVisible(true);
-            setEditable(false);
+            //setEditable(false);
         }
 
     }
@@ -101,15 +169,13 @@ public class CoZ_GUI extends JFrame{
         int trY = horizontalLines[y - 1].getY();
         int trX = verticalLines[x - 1].getX();
         if (what == CoZ_Node.CROSS){
-            Cross cross = new Cross(10, 10);
-            cross.setVisible(true);
-            cross.setBounds(trX + 2, trY + 2, 15, 15);
+            Cross cross = new Cross(20, 20);
+            cross.setBounds(trX, trY, cross.getWidth(), cross.getHeight());
             add(cross);
         }
         else if (what == CoZ_Node.ZERO){
-            Zero zero = new Zero(10, 10);
-            zero.setVisible(true);
-            zero.setBounds(trX + 5, trY + 5, 10, 10);
+            Zero zero = new Zero(20, 20);
+            zero.setBounds(trX, trY, zero.getWidth(), zero.getHeight());
             add(zero);
         }
         else {
