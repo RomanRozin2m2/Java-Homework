@@ -20,19 +20,16 @@ public class Work {
         //for (int h = 0; h < inp.length; h++){
          //   System.out.println(inp[h]);
         //}
-        Game g = new Game(new RealPlayer(), new ComputerPlayer());
-        CoZ_GUI gui = new CoZ_GUI(15);
+        //Game g = new Game(new RealPlayer(), new ComputerPlayer());
+        CoZ_GUI gui = new CoZ_GUI(3);
 
-        gui.setSomething(2, 2, CoZ_Node.ZERO);
-        gui.setSomething(4, 4, CoZ_Node.CROSS);
+       // gui.setSomething(2, 2, CoZ_Node.ZERO);
+        //gui.setSomething(4, 4, CoZ_Node.CROSS);
 
         
         CoZ_Evolver ev = new CoZ_Evolver(50, 200, 20, true);
         //ev.evolve();
 
-
-        //Game gee = new Game(new RealPlayer(), new RealPlayer());
-        //gee.startGame();
 
 
 

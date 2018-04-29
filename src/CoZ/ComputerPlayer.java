@@ -60,43 +60,4 @@ public class ComputerPlayer implements AbstractPlayer {
         }
     }
 
-    public void decide(Field field, CoZ_GUI guiField, CoZ_Node side) {
-        double[] inputs = new double[9];
-        for (int h = 0; h < 3; h++){
-            for (int i = 0; i < 3; i++){
-                if (field.field[h][i] == side){
-                    inputs[3 * h + i] = 1;
-                }
-                else if (field.field[h][i] == CoZ_Node.NOTHING){
-                    inputs[3 * h + i] = 0;
-                }
-                else {
-                    inputs[3 * h + i] = -1;
-                }
-            }
-        }
-        double[] outputs = net.calculate(inputs);
-        double[] sortedOutputs = new double[9];
-        for (int h = 0; h < 9; h++){
-            sortedOutputs[h] = outputs[h];
-        }
-        Arrays.sort(sortedOutputs);
-        for (int h = 8; h >= 0; h--){
-            double biggest = sortedOutputs[h];
-            for (int i = 0; i < 9; i++){
-                if (outputs[i] == biggest){
-                    if (field.cellIsEmpty(i%3, i/3)){
-                        if (side == CoZ_Node.CROSS) {
-                            field.setCross(i%3, i/3);
-                            guiField.setSomething(i%3, i%4, CoZ_Node.CROSS);
-                        } else if (side == CoZ_Node.ZERO) {
-                            field.setZero(i%3, i/3);
-                            guiField.setSomething(i%3, i%4, CoZ_Node.ZERO);
-                        }
-                        return;
-                    }
-                }
-            }
-        }
-    }
 }

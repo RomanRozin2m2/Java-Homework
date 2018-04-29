@@ -12,7 +12,14 @@ public class Game{
         crosses = crossesPlayer;
         zeros = zerosPlayer;
         field = new Field();
-        //guiField = new CoZ_GUI(3);
+    }
+
+    public Game(AbstractPlayer crossesPlayer, AbstractPlayer zerosPlayer, CoZ_GUI gui){
+        state  = CoZ_States.NOT_STARTED;
+        crosses = crossesPlayer;
+        zeros = zerosPlayer;
+        guiField = gui;
+        field = new Field(guiField);
     }
 
     public CoZ_Winners startGame() {

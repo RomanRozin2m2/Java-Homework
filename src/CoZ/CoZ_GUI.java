@@ -3,28 +3,10 @@ package CoZ;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.ImageObserver;
+import java.text.AttributedCharacterIterator;
 
 public class CoZ_GUI extends JFrame{
-
-    private class KListener implements KeyListener {
-
-        public void keyTyped(KeyEvent ke){
-
-        }
-
-        public void keyPressed(KeyEvent ke){
-            System.out.println(ke.getKeyChar() + " | " + ke.getKeyCode());
-            if(ke.getKeyCode() == 10){
-
-            }
-        }
-
-        public void keyReleased(KeyEvent ke){
-            if(ke.getKeyCode() == 10) {
-
-            }
-        }
-    }
 
     private class Line extends JComponent{
 
@@ -39,8 +21,15 @@ public class CoZ_GUI extends JFrame{
 
     }
 
+    private class GameThread implements Runnable {
+
+        public void run() {
+            game.startGame();
+        }
+    }
+
     private class Zero extends JComponent{
-        public void paint(Graphics g){
+        public void paintComponent(Graphics g){
             g.fillOval(2, 2, getWidth()-5, getHeight()-5);
             g.setColor(new Color(238, 238, 238));
             g.fillOval(5, 5, getWidth()-11, getHeight()-11);
@@ -53,7 +42,7 @@ public class CoZ_GUI extends JFrame{
     }
 
     private class Cross extends JComponent{
-        public void paint(Graphics g){
+        public void paintComponent(Graphics g){
             //g.fillOval(0, 0, this.getWidth(), this.getHeight());
             //g.fillRect(2, 2, getWidth()-3, getHeight()-3);
 
@@ -129,6 +118,7 @@ public class CoZ_GUI extends JFrame{
     private JTextArea field;
     private Line[] verticalLines;
     private Line[] horizontalLines;
+    private Game game;
 
     public CoZ_GUI(int fieldSize){
         super();
@@ -143,6 +133,9 @@ public class CoZ_GUI extends JFrame{
         horizontalLines =  new Line[fieldSize + 1];
         initGUI();
         setVisible(true);
+        game = new Game(new RealPlayer(), new RealPlayer(), this);
+        Thread thread = new Thread(new GameThread());
+        thread.start();
     }
 
     private void doLines(){
@@ -159,8 +152,9 @@ public class CoZ_GUI extends JFrame{
     }
 
     public void setSomething(int y, int x, CoZ_Node what){
-        int trY = horizontalLines[y - 1].getY();
-        int trX = verticalLines[x - 1].getX();
+        System.out.println("setsomething");
+        int trY = horizontalLines[y].getY();
+        int trX = verticalLines[x].getX();
         if (what == CoZ_Node.CROSS){
             Cross cross = new Cross(20, 20);
             cross.setBounds(trX, trY, cross.getWidth(), cross.getHeight());
@@ -174,27 +168,10 @@ public class CoZ_GUI extends JFrame{
         else {
             throw new IllegalArgumentException("Что ты творишь?");
         }
+        repaint();
     }
 
     private void initGUI(){
-        createField();
         doLines();
-    }
-
-    private void createField(){
-        field = new JTextArea("", fieldSize, fieldSize);
-        field.setBounds(50, 50, 20*fieldSize-17/2, 20*fieldSize+17/2);
-        field.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 17));
-        for (int h = 0; h < fieldSize; h++){
-            for (int i = 0; i < fieldSize; i++){
-                field.setText(field.getText() + "* ");
-            }
-            field.setText(field.getText() + "\n");
-        }
-        field.setEditable(false);
-        field.setVisible(false);
-        field.setTabSize(4);
-        field.setLineWrap(false);
-        add(field);
     }
 }

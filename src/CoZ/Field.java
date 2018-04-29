@@ -3,10 +3,18 @@ package CoZ;
 class Field {
     final int fieldSize = 3;
     CoZ_Node[][] field;
+    CoZ_GUI guiField;
 
         public Field(){
             field = new CoZ_Node[fieldSize][fieldSize];
             clearField();
+            guiField = null;
+        }
+
+        public Field(CoZ_GUI gui){
+            field = new CoZ_Node[fieldSize][fieldSize];
+            clearField();
+            guiField = gui;
         }
 
         void clearField() {
@@ -17,10 +25,16 @@ class Field {
 
         void setCross(int y, int x) {
             field[y][x] = CoZ_Node.CROSS;
+            if (guiField != null) {
+                guiField.setSomething(y, x, CoZ_Node.CROSS);
+            }
         }
 
         void setZero(int y, int x) {
             field[y][x] = CoZ_Node.ZERO;
+            if (guiField != null) {
+                guiField.setSomething(y, x, CoZ_Node.ZERO);
+            }
         }
         
         boolean cellIsEmpty(int y, int x){
