@@ -40,7 +40,19 @@ public class CoZ_GUI extends JFrame{
     }
 
     private class Zero extends JComponent{
+        public void paint(Graphics g){
+            g.fillOval(2, 2, getWidth()-5, getHeight()-5);
+            g.setColor(new Color(238, 238, 238));
+            g.fillOval(5, 5, getWidth()-11, getHeight()-11);
+        }
 
+        public Zero(int lineWidth, int lineHeight){
+            setSize(lineWidth,  lineHeight);
+            setVisible(true);
+        }
+    }
+
+    private class Cross extends JComponent{
         public void paint(Graphics g){
             //g.fillOval(0, 0, this.getWidth(), this.getHeight());
             //g.fillRect(2, 2, getWidth()-3, getHeight()-3);
@@ -107,29 +119,10 @@ public class CoZ_GUI extends JFrame{
 
         }
 
-        public Zero(int lineWidth, int lineHeight){
-            setSize(lineWidth,  lineHeight);
-            setVisible(true);
-        }
-
-    }
-
-    private class Cross extends JComponent{
-
-        public void paint(Graphics g){
-            g.fillOval(2, 2, getWidth()-5, getHeight()-5);
-            g.setColor(new Color(238, 238, 238));
-            g.fillOval(5, 5, getWidth()-11, getHeight()-11);
-        }
-
         public Cross(int lineWidth, int lineHeight){
             setSize(lineWidth,  lineHeight);
-            //setFont(new Font(Font.MONOSPACED, Font.PLAIN, 18));
-            //setText("X");
             setVisible(true);
-            //setEditable(false);
         }
-
     }
 
     private int fieldSize;
