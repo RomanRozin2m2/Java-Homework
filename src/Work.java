@@ -1,5 +1,6 @@
 import CoZ.*;
 import data.NeuralNetwork;
+import graphics.BaseGUI;
 
 import java.io.IOException;
 
@@ -27,9 +28,8 @@ public class Work {
         //gui.setSomething(4, 4, CoZ_Node.CROSS);
 
         
-        CoZ_Evolver ev = new CoZ_Evolver(50, 200, 20, true);
+        //CoZ_Evolver ev = new CoZ_Evolver(50, 200, 20, true);
         //ev.evolve();
-
 
 
 

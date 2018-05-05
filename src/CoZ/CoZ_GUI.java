@@ -1,12 +1,14 @@
 package CoZ;
 
+import graphics.BaseGUI;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.ImageObserver;
 import java.text.AttributedCharacterIterator;
 
-public class CoZ_GUI extends JFrame{
+public class CoZ_GUI extends BaseGUI{
 
     private class Line extends JComponent{
 
@@ -121,7 +123,7 @@ public class CoZ_GUI extends JFrame{
     private Game game;
 
     public CoZ_GUI(int fieldSize){
-        super();
+        super(new String[]{"Singleplayer as X", "Singleplayer as O","Multiplayer"});
         setPreferredSize(new Dimension(20*fieldSize + 100, 20*fieldSize + 100));
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLayout(null);
@@ -133,9 +135,22 @@ public class CoZ_GUI extends JFrame{
         horizontalLines =  new Line[fieldSize + 1];
         initGUI();
         setVisible(true);
-        game = new Game(new RealPlayer(), new RealPlayer(), this);
+    }
+
+    protected void startGame(){
+        int peer = gamemode.getSelectedIndex();
+        if (peer == 0) {
+            game = new Game(new RealPlayer(), new ComputerPlayer(), this);
+        }
+        else if (peer == 1){
+            game = new Game(new ComputerPlayer(), new RealPlayer(), this);
+        }
+        else if (peer == 2){
+            game = new Game(new RealPlayer(), new RealPlayer(), this);
+        }
         Thread thread = new Thread(new GameThread());
         thread.start();
+        game.startGame();
     }
 
     private void doLines(){
