@@ -1,32 +1,42 @@
 package graphics;
 
+import CoZ.CoZ_GUI;
+import Project2048.Game2048;
+import misc.Games;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public abstract class BaseGUI extends JFrame{
+public class BaseGUI extends JFrame{
     public class ButtonListener implements ActionListener{
         public void actionPerformed(ActionEvent ee){
+            System.out.println("action crated");
             startGame();
+            setVisible(false);
+            setEnabled(false);
         }
     }
 
     private JButton jbutton;
     private JTextField jtextarea;
     private JLabel jlabel;
+    private Games gtype;
     protected JComboBox<String> gamemode;
     String[] values;
 
-    public BaseGUI(String[] values){
+    public BaseGUI(String[] values, Games gameType){
         super();
         this.values = values;
+        gtype = gameType;
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLayout(null);
         setTitle("Запуск игры");
         setSize(300, 150);
         initGUI();
         setVisible(true);
+
     }
 
     private void initGUI(){
@@ -43,7 +53,19 @@ public abstract class BaseGUI extends JFrame{
         add(jbutton);
     }
 
-    protected abstract void startGame();
+    private void startGame(){
+        System.out.println("startgame crated.");
+        if (gtype == Games.COZ){
+            System.out.println("if crated.");
+            CoZ_GUI game = new CoZ_GUI(3);
+        }
+        else if (gtype == Games.G2048){
+            //
+        }
+        else if (gtype == Games.TETRIS){
+            //
+        }
+    }
 
     private void createJTextField(){
         jtextarea = new JTextField();

@@ -1,6 +1,7 @@
 import CoZ.*;
 import data.NeuralNetwork;
 import graphics.BaseGUI;
+import misc.Games;
 
 import java.io.IOException;
 
@@ -19,15 +20,15 @@ public class Work {
         inp[2] = 9;
         inp = net.calculate(inp);
         //for (int h = 0; h < inp.length; h++){
-         //   System.out.println(inp[h]);
+        //   System.out.println(inp[h]);
         //}
         //Game g = new Game(new RealPlayer(), new ComputerPlayer());
-        CoZ_GUI gui = new CoZ_GUI(3);
+        BaseGUI gui = new BaseGUI(new String[]{"Singleplayer as X", "Singleplayer as O","Multiplayer"}, Games.COZ);
 
-       // gui.setSomething(2, 2, CoZ_Node.ZERO);
+        // gui.setSomething(2, 2, CoZ_Node.ZERO);
         //gui.setSomething(4, 4, CoZ_Node.CROSS);
 
-        
+
         //CoZ_Evolver ev = new CoZ_Evolver(50, 200, 20, true);
         //ev.evolve();
 
@@ -41,7 +42,7 @@ public class Work {
         //Vertex<Integer, Integer>[] graphite = new Vertex[13];
         //for(int h = 0; h < graphite.length; h++){
         //    graphite[h] = new Vertex<>(h);
-           // vortex.addVertex(graphite[h]);
+        // vortex.addVertex(graphite[h]);
         //}
         //vortex.addEdge(graphite[6], graphite[3]);
         //vortex.addEdge(graphite[6], graphite[5]);

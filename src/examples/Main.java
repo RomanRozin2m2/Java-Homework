@@ -39,7 +39,6 @@ public class Main {
         Lambdas.funcInterface0(implementedInterface0);
     }
 
-
     private static void test3(){
         Lambdas.funcInterface0(new Interface0() {
             public int anyMethodInterface0() {
