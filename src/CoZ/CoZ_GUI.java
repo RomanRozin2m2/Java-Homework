@@ -28,21 +28,46 @@ public class CoZ_GUI extends JFrame{
         }
     }
 
-    private class Zero extends JComponent{
+    private class Cell extends JComponent{
+
+        private CoZ_Node what = CoZ_Node.NOTHING;
+
+        public void setWhat(CoZ_Node what) {
+            this.what = what;
+            repaint();
+        }
+
         public void paintComponent(Graphics g){
-            g.fillOval(2, 2, getWidth()-5, getHeight()-5);
+            if (what == CoZ_Node.ZERO){
+                paintZero(g);
+            }
+            else if (what == CoZ_Node.CROSS){
+                paintCross(g);
+            }
+        }
+
+        public void paintZero(Graphics g){
+
+            double ext = 0.9;
+            double inn = 0.6;
+
+            double startExt = (1 - ext) / 2;
+            double startInn = (1 - inn) / 2;
+
+
+            g.fillOval((int) (startExt * getWidth()),
+                    (int) (startExt * getHeight()),
+                    (int) (getWidth() * ext),
+                    (int) (getHeight() * ext));
+
             g.setColor(new Color(238, 238, 238));
-            g.fillOval(5, 5, getWidth()-11, getHeight()-11);
+            g.fillOval((int) (startInn * getWidth()),
+                    (int) (startInn * getHeight()),
+                    (int) (getWidth() * inn),
+                    (int) (getHeight() * inn));
         }
 
-        public Zero(int lineWidth, int lineHeight){
-            setSize(lineWidth,  lineHeight);
-            setVisible(true);
-        }
-    }
-
-    private class Cross extends JComponent{
-        public void paintComponent(Graphics g){
+        public void paintCross(Graphics g){
             //g.fillOval(0, 0, this.getWidth(), this.getHeight());
             //g.fillRect(2, 2, getWidth()-3, getHeight()-3);
 
@@ -50,7 +75,7 @@ public class CoZ_GUI extends JFrame{
             // Коэффициент k - на сколько должны быть шировкие линии у крестика
             // маленикий k - тонкие линии
             // большой k - толстые линии
-            double k = 0.2;
+            double k = 0.13;
 
             int startX = 2;
             int startY = 2;
@@ -108,7 +133,7 @@ public class CoZ_GUI extends JFrame{
 
         }
 
-        public Cross(int lineWidth, int lineHeight){
+        public Cell(int lineWidth, int lineHeight){
             setSize(lineWidth,  lineHeight);
             setVisible(true);
         }
@@ -118,6 +143,7 @@ public class CoZ_GUI extends JFrame{
     private final int maxCellSize = 300;
     private Line[] verticalLines;
     private Line[] horizontalLines;
+    private Cell[][] field;
     private Game game;
 
     public CoZ_GUI(int fieldSize){
@@ -130,12 +156,26 @@ public class CoZ_GUI extends JFrame{
         this.fieldSize = fieldSize;
         verticalLines = new Line[fieldSize + 1];
         horizontalLines =  new Line[fieldSize + 1];
+        field = new Cell[fieldSize][fieldSize];
         initGUI();
         setVisible(true);
         game = new Game(new RealPlayer(), new RealPlayer(), this);
         GameThread gameThread = new GameThread();
         Thread thread = new Thread(gameThread);
         thread.start();
+    }
+
+    private void doCells(){
+        for (int h = 0; h < field.length; h++){
+            for (int g = 0; g < field.length; g++){
+                field[h][g] = new Cell(maxCellSize / fieldSize, maxCellSize / fieldSize);
+                field[h][g].setBounds(verticalLines[h].getX(),
+                        horizontalLines[g].getY(),
+                        field[h][g].getWidth(),
+                        field[h][g].getHeight());
+                add(field[h][g]);
+            }
+        }
     }
 
     private void doLines(){
@@ -152,26 +192,13 @@ public class CoZ_GUI extends JFrame{
     }
 
     public void setSomething(int y, int x, CoZ_Node what){
-        System.out.println("setsomething");
-        int trY = horizontalLines[y].getY();
-        int trX = verticalLines[x].getX();
-        if (what == CoZ_Node.CROSS){
-            Cross cross = new Cross(20, 20);
-            cross.setBounds(trX, trY, cross.getWidth(), cross.getHeight());
-            add(cross);
-        }
-        else if (what == CoZ_Node.ZERO){
-            Zero zero = new Zero(20, 20);
-            zero.setBounds(trX, trY, zero.getWidth(), zero.getHeight());
-            add(zero);
-        }
-        else {
-            throw new IllegalArgumentException("Что ты творишь?");
-        }
+        System.out.println("setsomething" + x + " " + y + " " + field[x][y].getBounds());
+        field[x][y].setWhat(what);
         repaint();
     }
 
     private void initGUI(){
         doLines();
+        doCells();
     }
 }
