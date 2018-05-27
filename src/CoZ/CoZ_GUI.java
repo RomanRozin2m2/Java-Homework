@@ -1,10 +1,14 @@
 package CoZ;
 
+import data.NeuralNetwork;
 import graphics.BaseGUI;
+import misc.FileHandler;
 import misc.Games;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class CoZ_GUI extends JFrame{
 
@@ -29,6 +33,52 @@ public class CoZ_GUI extends JFrame{
     }
 
     private class Cell extends JComponent{
+
+        private class ClickListener implements MouseListener{
+
+            public void mouseClicked(MouseEvent e) {
+
+            }
+
+            public void mousePressed(MouseEvent e) {
+                if (game.getField().cellIsEmpty(y, x)) {
+                    if (game.getState() == CoZ_States.CROSSES_MOVE) {
+                        if(crosses instanceof GUIPlayer){
+                            GUIPlayer crossesPlayer = (GUIPlayer) crosses;
+                            crossesPlayer.x = x;
+                            crossesPlayer.y = y;
+                            crossesPlayer.isReady = true;
+                        }
+                    }
+                    else if (game.getState() == CoZ_States.ZEROS_MOVE) {
+                        if(zeros instanceof GUIPlayer){
+                            GUIPlayer zerosPlayer = (GUIPlayer) zeros;
+                            zerosPlayer.x = x;
+                            zerosPlayer.y = y;
+                            zerosPlayer.isReady = true;
+                        }
+                    }
+                    else {
+                        throw new IllegalArgumentException("Как так-то?");
+                    }
+                }
+            }
+
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            public void mouseExited(MouseEvent e) {
+
+            }
+        }
+
+        int x;
+        int y;
 
         private CoZ_Node what = CoZ_Node.NOTHING;
 
@@ -133,9 +183,12 @@ public class CoZ_GUI extends JFrame{
 
         }
 
-        public Cell(int lineWidth, int lineHeight){
+        public Cell(int x, int y, int lineWidth, int lineHeight){
             setSize(lineWidth,  lineHeight);
             setVisible(true);
+            this.y = y;
+            this.x = x;
+            this.addMouseListener(new ClickListener());
         }
     }
 
@@ -143,6 +196,8 @@ public class CoZ_GUI extends JFrame{
     private final int maxCellSize = 300;
     private Line[] verticalLines;
     private Line[] horizontalLines;
+    AbstractPlayer crosses;
+    AbstractPlayer zeros = new GUIPlayer();
     private Cell[][] field;
     private Game game;
 
@@ -159,7 +214,10 @@ public class CoZ_GUI extends JFrame{
         field = new Cell[fieldSize][fieldSize];
         initGUI();
         setVisible(true);
-        game = new Game(new RealPlayer(), new RealPlayer(), this);
+        // todo тут надо иф
+        crosses = new GUIPlayer();
+        zeros = new ComputerPlayer( FileHandler.loadObject("Neurals/Нейросеть_от_бога"));
+        game = new Game(crosses, zeros, this);
         GameThread gameThread = new GameThread();
         Thread thread = new Thread(gameThread);
         thread.start();
@@ -168,7 +226,7 @@ public class CoZ_GUI extends JFrame{
     private void doCells(){
         for (int h = 0; h < field.length; h++){
             for (int g = 0; g < field.length; g++){
-                field[h][g] = new Cell(maxCellSize / fieldSize, maxCellSize / fieldSize);
+                field[h][g] = new Cell(h, g,maxCellSize / fieldSize, maxCellSize / fieldSize);
                 field[h][g].setBounds(verticalLines[h].getX(),
                         horizontalLines[g].getY(),
                         field[h][g].getWidth(),

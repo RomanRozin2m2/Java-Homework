@@ -22,6 +22,18 @@ public class Game{
         field = new Field(guiField);
     }
 
+    public Field getField() {
+        return field;
+    }
+
+    public CoZ_States getState() {
+        return state;
+    }
+
+    public void setState(CoZ_States state) {
+        this.state = state;
+    }
+
     public CoZ_Winners startGame() {
         state = CoZ_States.CROSSES_MOVE;
         return mainLoop();
@@ -50,7 +62,7 @@ public class Game{
         }
     }
 
-    private CoZ_Winners testForWinning(){
+    public CoZ_Winners testForWinning(){
         if (field.testForWin()) {
             if (state == CoZ_States.CROSSES_MOVE) {
                 //System.out.println("Крестики победили!");
