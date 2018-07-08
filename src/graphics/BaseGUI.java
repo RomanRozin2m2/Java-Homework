@@ -1,6 +1,7 @@
 package graphics;
 
 import CoZ.CoZ_GUI;
+import Project2048.GUI_2048;
 import Project2048.Game2048;
 import misc.Games;
 
@@ -60,7 +61,7 @@ public class BaseGUI extends JFrame{
             CoZ_GUI game = new CoZ_GUI(3);
         }
         else if (gtype == Games.G2048){
-            //
+            GUI_2048 gui = new GUI_2048(4);
         }
         else if (gtype == Games.TETRIS){
             //

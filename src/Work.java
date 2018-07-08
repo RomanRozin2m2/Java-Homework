@@ -23,7 +23,8 @@ public class Work {
         //   System.out.println(inp[h]);
         //}
         //Game g = new Game(new RealPlayer(), new ComputerPlayer());
-        BaseGUI gui = new BaseGUI(new String[]{"Singleplayer as X", "Singleplayer as O","Multiplayer"}, Games.COZ);
+        //BaseGUI gui = new BaseGUI(new String[]{"Singleplayer as X", "Singleplayer as O","Multiplayer as X","Multiplayer as O","Evolution"}, Games.COZ);
+        BaseGUI gui = new BaseGUI(new String[]{"Single2048"}, Games.G2048);
 
         // gui.setSomething(2, 2, CoZ_Node.ZERO);
         //gui.setSomething(4, 4, CoZ_Node.CROSS);
