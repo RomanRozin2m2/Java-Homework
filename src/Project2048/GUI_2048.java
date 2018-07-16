@@ -81,6 +81,8 @@ public class GUI_2048 extends JFrame{
             repaint();
         }
 
+        //xx1
+
         public Cell(int x, int y, int lineWidth, int lineHeight){
             System.out.println("crated cell");
             setSize(lineWidth,  lineHeight);
