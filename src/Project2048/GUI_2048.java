@@ -114,13 +114,13 @@ public class GUI_2048 extends JFrame{
         verticalLines = new Line[fieldSize + 1];
         horizontalLines =  new Line[fieldSize + 1];
         field = new Cell[fieldSize][fieldSize];
-        initGUI();
         setVisible(true);
         player = new RealPlayer();
         game = new Game2048(player);
         GameThread gameThread = new GameThread();
         Thread thread = new Thread(gameThread);
         thread.start();
+        initGUI();
     }
 
     private void doCells(){
@@ -132,6 +132,7 @@ public class GUI_2048 extends JFrame{
                         field[h][g].getWidth(),
                         field[h][g].getHeight());
                 add(field[h][g]);
+                field[h][g].setValue(game.field.field[h][g].getValue());
             }
         }
     }
