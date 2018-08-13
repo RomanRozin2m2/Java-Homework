@@ -1,6 +1,7 @@
 package Project2048;
 
 import misc.FileHandler;
+import java.util.Random;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,6 +21,13 @@ public class GUI_2048 extends JFrame{
             setVisible(true);
         }
 
+    }
+
+    private class RefreshThread implements Runnable {
+
+        public void run() {
+            refreshCells();
+        }
     }
 
     private class GameThread implements Runnable {
@@ -62,6 +70,10 @@ public class GUI_2048 extends JFrame{
 
         private int value = 0;
 
+        public void refresh(){
+            value = game.field.field[x][y].getValue();
+        }
+
         public void newValue(){
             value = 2;
             drawValue();
@@ -102,6 +114,7 @@ public class GUI_2048 extends JFrame{
     AbstractPlayer2048 player;
     private Cell[][] field;
     private Game2048 game;
+    private Random random;
 
     public GUI_2048(int fieldSize){
         setPreferredSize(new Dimension(20*fieldSize + 100, 20*fieldSize + 100));
@@ -120,7 +133,23 @@ public class GUI_2048 extends JFrame{
         GameThread gameThread = new GameThread();
         Thread thread = new Thread(gameThread);
         thread.start();
+        RefreshThread refreshThread = new RefreshThread();
+        Thread rethread = new Thread(refreshThread);
+        rethread.start();
         initGUI();
+    }
+
+    private void refreshCells(){
+        for (int h = 0; h < field.length; h++){
+            for (int i = 0; i < field.length; i++){
+                field[h][i].refresh();
+            }
+        }
+        System.out.println("refresh crated");
+    }
+
+    private void generaterandom(){
+        field[random.nextInt(field.length)][random.nextInt(field.length)].setValue(2);
     }
 
     private void doCells(){
@@ -135,6 +164,11 @@ public class GUI_2048 extends JFrame{
                 field[h][g].setValue(game.field.field[h][g].getValue());
             }
         }
+    }
+
+    public void afterMoveTo(){
+        refreshCells();
+        generaterandom();
     }
 
     private void doLines(){

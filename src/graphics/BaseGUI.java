@@ -2,7 +2,6 @@ package graphics;
 
 import CoZ.CoZ_GUI;
 import Project2048.GUI_2048;
-import Project2048.Game2048;
 import misc.Games;
 
 import javax.swing.*;

@@ -25,10 +25,10 @@ public class Field {
             for (int i = 0; i < fieldSize; i++){
                 if (isEmpty(h, i)){
                     if (field[h][i] != null){
-                        field[h][i].setValue(2);
+                        field[h][i].setValue(0);
                     }
                     else {
-                        field[h][i] = new Node(h, i, 2);
+                        field[h][i] = new Node(h, i, 0);
                     }
                 }
             }
