@@ -1,6 +1,8 @@
 package Project2048;
 
 import misc.FileHandler;
+import sun.font.TrueTypeFont;
+
 import java.util.Random;
 
 import javax.swing.*;
@@ -149,7 +151,18 @@ public class GUI_2048 extends JFrame{
     }
 
     private void generaterandom(){
-        field[random.nextInt(field.length)][random.nextInt(field.length)].setValue(2);
+        while (true) {
+            int a = random.nextInt(field.length);
+            int b = random.nextInt(field.length);
+            if(field[a][b].value == 0) {
+                field[a][b].setValue(2);
+                break;
+            }
+            else {
+                a = random.nextInt(field.length);
+                b = random.nextInt(field.length);
+            }
+        }
     }
 
     private void doCells(){
