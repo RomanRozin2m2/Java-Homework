@@ -41,7 +41,6 @@ public class TetrisGUI extends JFrame{
     }
 
     public void monitorControls(){
-        System.out.println("monitor v ebalo");
         if (controls.getKeyPressed() != Keys.NOTHING){
             if (controls.getKeyPressed() == Keys.GO_LEFT){
                 field.moveLeft();
