@@ -1,4 +1,4 @@
-package CoZ;
+package games.CoZ;
 
 public interface AbstractPlayer {
     public void endGame(Field field);

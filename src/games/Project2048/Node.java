@@ -1,15 +1,25 @@
-package Project2048;
+package games.Project2048;
 
 class Node {
     private int value;
     private int x;
     private int y;
+    private boolean isNew;
 
     Node(int x, int y, int value){
          this.value = value;
          this.x = x;
          this.y = y;
+         isNew = false;
      }
+
+    public void setNew(boolean value){
+        isNew = value;
+    }
+
+    public boolean isNew(){
+        return isNew;
+    }
 
     public int getValue() {
         return value;

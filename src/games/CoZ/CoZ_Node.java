@@ -1,4 +1,4 @@
-package CoZ;
+package games.CoZ;
 
 public enum CoZ_Node {
     CROSS, ZERO, NOTHING;

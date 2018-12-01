@@ -1,4 +1,4 @@
-package CoZ;
+package games.CoZ;
 
 import data.NeuralNetwork;
 

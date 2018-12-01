@@ -1,11 +1,12 @@
-package Project2048;
+package games.Project2048;
 
 public class Game2048 {
-    Field field = new Field();
+    Field field;
     AbstractPlayer2048 player2048;
 
-    public Game2048(AbstractPlayer2048 player) {
+    public Game2048(AbstractPlayer2048 player, GUI_2048 gui, int winnum) {
         player2048 = player;
+        field = new Field(gui, winnum);
     }
 
     public int startGame(){
@@ -17,8 +18,7 @@ public class Game2048 {
         field.generate();
         while (true){
             player2048.decide(field);
-            field.generate();
-            if(field.checkForWin()){
+            if(field.checkForWin() && false){
                 System.out.println("Ты победил!");
                 break;
             }

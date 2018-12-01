@@ -30,7 +30,7 @@ public class FileHandler {
         catch (IOException ex){
             System.out.println("Ошибка загрузки файла: " + ex.getMessage());
         }
-        return ContentBuilder.toString();
+        return ContentBuilder.toString().trim();
     }
 
     public static <T> void saveObject(T object, String path){

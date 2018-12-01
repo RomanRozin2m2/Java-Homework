@@ -1,4 +1,4 @@
-package CoZ;
+package games.CoZ;
 
 class Field {
     final int fieldSize = 3;

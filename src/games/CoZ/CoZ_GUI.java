@@ -1,9 +1,6 @@
-package CoZ;
+package games.CoZ;
 
-import data.NeuralNetwork;
-import graphics.BaseGUI;
 import misc.FileHandler;
-import misc.Games;
 
 import javax.swing.*;
 import java.awt.*;
@@ -206,7 +203,7 @@ public class CoZ_GUI extends JFrame{
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLayout(null);
         this.fieldSize = fieldSize;
-        setTitle("CoZ");
+        setTitle("games/CoZ");
         setSize(maxCellSize + 120, maxCellSize + 128);
         this.fieldSize = fieldSize;
         verticalLines = new Line[fieldSize + 1];

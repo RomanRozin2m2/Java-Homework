@@ -1,4 +1,4 @@
-package CoZ;
+package games.CoZ;
 
 public class Game{
     private Field field;

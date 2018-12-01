@@ -1,4 +1,4 @@
-package Project2048;
+package games.Project2048;
 
 public interface AbstractPlayer2048 {
 
