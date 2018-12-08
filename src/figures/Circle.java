@@ -3,7 +3,7 @@ package figures;
 import java.lang.Math;
 
 import misc.Parameter;
-import print.P;
+import util.Util;
 
 public class Circle extends Shape{
 
@@ -22,12 +22,12 @@ public class Circle extends Shape{
     }
 
     public Circle(){
-        P.print("In Circle");
+        Util.print("In Circle");
         radius = 0;
     }
 
     public Circle(int xipt, int yipt, int radio){
-        P.print("In Circle-2");
+        Util.print("In Circle-2");
         radius = radio;
         x = xipt;
         y = yipt;

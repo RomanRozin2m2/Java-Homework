@@ -3,12 +3,17 @@ package games.tetris;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import static util.Util.print;
 
 public class Controls implements KeyListener {
     private Keys keyPressed = Keys.NOTHING;
 
     public Keys getKeyPressed() {
         return keyPressed;
+    }
+
+    public void reset() {
+        keyPressed = Keys.NOTHING;
     }
 
     public void keyTyped(KeyEvent e) {

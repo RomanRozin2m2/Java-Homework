@@ -1,6 +1,6 @@
 package figures;
 
-import print.P;
+import util.Util;
 
 public class Square extends Shape{
 
@@ -8,7 +8,7 @@ public class Square extends Shape{
 
     public Square(int len){
         length = len;
-        P.print("Создан квадрат со стороной " + length + ".");
+        Util.print("Создан квадрат со стороной " + length + ".");
     }
 
     public double calculateArea(){

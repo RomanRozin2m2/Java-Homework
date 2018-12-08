@@ -5,6 +5,7 @@ public class Field {
     public final int fieldHeight;
     public final int fieldWidth;
     boolean isCycled;
+    boolean isNeedToUpdate;
 
     public Field(int height, int width, boolean cycling){
         isCycled = cycling;
@@ -43,6 +44,15 @@ public class Field {
                 }
             }
         }
+        isNeedToUpdate = true;
+    }
+
+    public boolean isNeedToUpdate() {
+        return isNeedToUpdate;
+    }
+
+    public void noNeedToUpdate(){
+        isNeedToUpdate = false;
     }
 
     public void advance(){
@@ -99,6 +109,7 @@ public class Field {
                 }
             }
         }
+        isNeedToUpdate = true;
     }
 
     public void moveRight(){
@@ -155,6 +166,7 @@ public class Field {
                 }
             }
         }
+        isNeedToUpdate = true;
     }
 
     public void moveLeft(){
@@ -216,6 +228,7 @@ public class Field {
                 }
             }
         }
+        isNeedToUpdate = true;
     }
 
     public boolean isEmpty(int x, int y){
@@ -243,7 +256,7 @@ public class Field {
     }
 
     public void drop(){
-        if (isNeedToAdvance()){
+        while (isNeedToAdvance()){
             advance();
         }
     }

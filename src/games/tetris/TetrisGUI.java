@@ -5,13 +5,6 @@ import java.awt.*;
 
 public class TetrisGUI extends JFrame{
 
-    private class MCThread implements Runnable{
-
-        public void run() {
-            monitorControls();
-        }
-    }
-
     private JTextArea Gfield;
     final int fieldWidth;
     final int fieldHeight;
@@ -31,33 +24,11 @@ public class TetrisGUI extends JFrame{
         setSize(fieldWidth + 20, fieldHeight + 20);
         initGUI();
         setVisible(true);
-        MCThread mcThread = new MCThread();
-        Thread thread = new Thread(mcThread);
-        thread.start();
+        MCThread mcThread = new MCThread(field, controls);
     }
 
     private void initGUI(){
         createJTextArea();
-    }
-
-    public void monitorControls(){
-        if (controls.getKeyPressed() != Keys.NOTHING){
-            if (controls.getKeyPressed() == Keys.GO_LEFT){
-                field.moveLeft();
-            }
-            else if (controls.getKeyPressed() == Keys.GO_RIGHT){
-                field.moveRight();
-            }
-            else if (controls.getKeyPressed() == Keys.CLOCKWISE){
-
-            }
-            else if (controls.getKeyPressed() == Keys.ANTI_CLOCKWISE){
-
-            }
-            else if (controls.getKeyPressed() == Keys.DROP){
-                field.drop();
-            }
-        }
     }
 
     private void createJTextArea(){
@@ -67,6 +38,7 @@ public class TetrisGUI extends JFrame{
         Gfield.setTabSize(4);
         Gfield.setEditable(false);
         Gfield.setLineWrap(true);
+        Gfield.addKeyListener(controls);
         setField();
         add(Gfield);
     }

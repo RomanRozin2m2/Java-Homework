@@ -1,5 +1,5 @@
 package figures;
-import print.P;
+import util.Util;
 
 public abstract class Shape implements Location {
     int x;
@@ -8,14 +8,14 @@ public abstract class Shape implements Location {
 
     public Shape(int xipt, int yipt){
 
-        P.print("In Shape");
+        Util.print("In Shape");
         x = xipt;
         y = yipt;
         count += 1;
     }
 
     public Shape(){
-        P.print("In Shape-2");
+        Util.print("In Shape-2");
         x = 0;
         y = 0;
         count += 1;
@@ -55,7 +55,7 @@ public abstract class Shape implements Location {
     }
 
     public void coor(){
-        P.print("Координаты этой формы: X - " + x + ", Y - " + y + ".");
+        Util.print("Координаты этой формы: X - " + x + ", Y - " + y + ".");
     }
 
     public String toString(){
