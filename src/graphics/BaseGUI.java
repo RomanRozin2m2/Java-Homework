@@ -8,29 +8,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 
 public class BaseGUI extends JFrame{
-
-    public class ChangeListener implements ActionListener{
-        public void actionPerformed(ActionEvent e) {
-            openHidden2048Context();
-        }
-    }
-
-    public class ButtonListener implements ActionListener{
-        public void actionPerformed(ActionEvent ee){
-            win = Integer.parseInt(winnum.getText());
-            fsz = Integer.parseInt(winnum.getText());
-            FileHandler.save("C:/Users/roman/IdeaProjects/Main/2048/winnum.txt", win + "");
-            FileHandler.save("C:/Users/roman/IdeaProjects/Main/2048/highscore.txt", highscore + "");
-            FileHandler.save("C:/Users/roman/IdeaProjects/Main/2048/fieldSize.txt", fsz + "");
-            System.out.println("action crated");
-            startGame();
-            setVisible(false);
-            setEnabled(false);
-            GUI_2048 gui_2048 = new GUI_2048(fsz, win);
-        }
-    }
 
     private JTextField fieldSize;
     private JTextField winnum;
@@ -77,7 +57,18 @@ public class BaseGUI extends JFrame{
         jbutton = new JButton();
         jbutton.setBounds(21, 75, 250, 25);
         jbutton.setText("НАЧАТЬ ИГРУ");
-        jbutton.addActionListener(new ButtonListener());
+        jbutton.addActionListener(ee -> {
+            win = Integer.parseInt(winnum.getText());
+            fsz = Integer.parseInt(winnum.getText());
+            FileHandler.save("C:/Users/roman/IdeaProjects/Main/2048/winnum.txt", win + "");
+            FileHandler.save("C:/Users/roman/IdeaProjects/Main/2048/highscore.txt", highscore + "");
+            FileHandler.save("C:/Users/roman/IdeaProjects/Main/2048/fieldSize.txt", fsz + "");
+            System.out.println("action crated");
+            startGame();
+            setVisible(false);
+            setEnabled(false);
+            new GUI_2048(fsz, win);
+        });
         add(jbutton);
     }
 
@@ -103,7 +94,7 @@ public class BaseGUI extends JFrame{
     private void createJComboBox(){
         gamemode = new JComboBox<String>();
         gamemode.setBounds(156, 27, 115, 25);
-        gamemode.addActionListener(new ChangeListener());
+        gamemode.addActionListener(ee -> openHidden2048Context());
         for (int h = 0; h < values.length; h++){
             gamemode.addItem(values[h]);
         }

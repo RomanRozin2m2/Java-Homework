@@ -1,7 +1,6 @@
 package games.tetris;
 
-import static util.Util.print;
-import static util.Util.sleep;
+import static util.Util.*;
 
 public class Tetris {
     TetrisGUI tetrisGUI;
