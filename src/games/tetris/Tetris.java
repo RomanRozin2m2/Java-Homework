@@ -23,7 +23,10 @@ public class Tetris {
                 if (tetrisGUI.field.isNeedToAdvance()) {
                     tetrisGUI.field.advance();
                 } else {
-                    tetrisGUI.field.createBlock();
+                    while(tetrisGUI.field.clearFullLines());
+                    if (!tetrisGUI.field.createBlock()){
+                        System.out.println("can't");
+                    }
                 }
                 sleep(500);
             }

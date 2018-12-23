@@ -30,21 +30,55 @@ public class Field {
         return false;
     }
 
-    public void createBlock(){
+    public boolean clearFullLines(){
+        for (int y = 0; y < fieldHeight; y++){
+            for (int x = 0; x < fieldWidth;){
+                if (field[x][y].isFilled){
+                    if (x == fieldWidth-1){
+                        for (int tx = 0; tx < fieldWidth; tx++){
+                            field[tx][y].isFilled = false;
+                        }
+                        for (int ny = y; ny < fieldHeight-1; ny++){
+                            for (int nx = 0; nx < fieldWidth; nx++){
+                                field[nx][ny].isFilled = field[nx][ny+1].isFilled;
+                                field[nx][ny+1].isFilled = false;
+                            }
+                        }
+                        return true;
+                    }
+                    else {
+                        x++;
+                    }
+                }
+                else{
+                    break;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean createBlock(){
         Figure block = new Figure();
         int left = fieldWidth / 2 - block.width / 2;
         int down = fieldHeight - block.height;
         for (int i = left; i < left + block.width; i++){
             for (int h = down; h < down + block.height; h++){
-                if (isEmpty(i,h) && checkIndexes(i,h)){
-                    if (block.cells[i-left][h-down].isFilled){
-                        field[i][h].setFilled(true);
-                        field[i][h].setFlying(true);
-                    }
+                if (!isEmpty(i,h) || !checkIndexes(i,h)){
+                    return false;
+                }
+            }
+        }
+        for (int i = left; i < left + block.width; i++){
+            for (int h = down; h < down + block.height; h++){
+                if (block.cells[i-left][h-down].isFilled){
+                    field[i][h].setFilled(true);
+                    field[i][h].setFlying(true);
                 }
             }
         }
         isNeedToUpdate = true;
+        return true;
     }
 
     public boolean isNeedToUpdate() {
