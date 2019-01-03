@@ -23,10 +23,12 @@ public class MCThread implements Runnable {
                 field.moveRight();
             }
             else if (controls.getKeyPressed() == Keys.CLOCKWISE){
-
+                System.out.println("dd");
+                field.rotate(true);
             }
             else if (controls.getKeyPressed() == Keys.ANTI_CLOCKWISE){
-
+                System.out.println("ww");
+                field.rotate(false);
             }
             else if (controls.getKeyPressed() == Keys.DROP){
                 field.drop();
