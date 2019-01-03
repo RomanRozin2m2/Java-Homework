@@ -6,14 +6,6 @@ public class Figure {
     Random random = new Random();
     int[][][] cells;
 
-    class SingleFigure {
-
-    }
-
-    class FigureType {
-
-    }
-
     static int[][][][] predefinedFigures = new int[][][][] {
             {
                 {
