@@ -5,17 +5,17 @@ import examples.Lambdas.Interface0;
 
 public class Main {
     public static void main(String[] args){
-        System.out.println(1); test1();
-        System.out.println(2); test2();
-        System.out.println(3); test3();
-        System.out.println(4); test4();
+        //System.out.println(1); test1();
+        //System.out.println(2); test2();
+        //System.out.println(3); test3();
+        //System.out.println(4); test4();
         System.out.println(5); test5();
-        System.out.println(6); test6();
+        //System.out.println(6); test6();
     }
 
-    private static void test1(){
-        class ExtendedClass1 extends Class1{
-            int anyMethodClass1(){
+    private static void test1() {
+        class ExtendedClass1 extends Class1 {
+            int anyMethodClass1() {
                 System.out.println("ExtendedClass1::anyMethodClass1");
                 return 5;
             }
@@ -26,8 +26,8 @@ public class Main {
         Lambdas.funcClass1(extendedClass1);
     }
 
-    private static void test2(){
-        class ImplementedInterface0 implements Interface0{
+    private static void test2() {
+        class ImplementedInterface0 implements Interface0 {
             public int anyMethodInterface0() {
                 System.out.println("ImplementedInterface0::anyMethodInterface0");
                 return 6;
@@ -39,7 +39,7 @@ public class Main {
         Lambdas.funcInterface0(implementedInterface0);
     }
 
-    private static void test3(){
+    private static void test3() {
         Lambdas.funcInterface0(new Interface0() {
             public int anyMethodInterface0() {
                 System.out.println("Interface0::anyMethodInterface0");
@@ -48,7 +48,7 @@ public class Main {
         });
     }
 
-    private static void test4(){
+    private static void test4() {
         Lambdas.funcInterface0(() -> {
             System.out.println("Interface0::anyMethodInterface0");
             return 20;
@@ -57,30 +57,29 @@ public class Main {
 
     private static void test5(){
         Lambdas.funcInterface0(() -> 5);
-        Lambdas.funcInterface1((x) -> x + 5);
+        Lambdas.funcInterface1(x -> x + 5);
         Lambdas.funcInterface2((x, y) -> x + y);
         Lambdas.funcInterface3((x, y, z) -> x - y + z);
+        Lambdas.funcInterfaceVoid(() -> System.out.println("234234"));
     }
 
-    private static void test6(){
+    private static void test6() {
         Lambdas.funcInterface1(x -> x + 15);
 
         // Передали функцию максимума
         Lambdas.funcInterface2((x, y) -> {
-            if (x > y){
+            if (x > y) {
                 return x;
-            }
-            else{
+            } else {
                 return y;
             }
         });
 
         // Передали функцию минимума
         Lambdas.funcInterface2((x, y) -> {
-            if (x > y){
+            if (x > y) {
                 return y;
-            }
-            else{
+            } else {
                 return x;
             }
         });
@@ -99,12 +98,28 @@ public class Main {
         Lambdas.funcInterface2(Main::myMinimum);
 
 
-        for (int i = 10; i <= 15; i++){
+        for (int i = 10; i <= 15; i++) {
             System.out.print("i = " + i + " ");
-            int z = i;
+
+            class SaveZ {
+                SaveZ(int i) {
+                    z = i;
+                }
+                int z;
+            }
+
+            SaveZ z = new SaveZ(i);
+
+            Thread t = new Thread(() -> {
+                System.out.println(123);
+            });
+
+            t.start();
+
             Lambdas.funcInterface2((x, y) -> {
-                int absX = Math.abs(x - z);
-                int absY = Math.abs(y - z);
+                int absX = Math.abs(x - z.z);
+                int absY = Math.abs(y - z.z);
+                z.z++;
                 if (absX < absY){
                     return x;
                 }
@@ -113,24 +128,20 @@ public class Main {
                 }
             });
         }
-
-
     }
 
     private static int myMaximum(int a, int b){
-        if(a > b){
+        if(a > b) {
             return a;
-        }
-        else{
+        } else {
             return b;
         }
     }
 
-    private static int myMinimum(int a, int b){
+    private static int myMinimum(int a, int b) {
         if(a > b){
             return b;
-        }
-        else{
+        } else {
             return a;
         }
     }
