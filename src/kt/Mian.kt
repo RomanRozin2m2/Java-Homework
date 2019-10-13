@@ -1,73 +1,31 @@
 package kt
 
-import java.util.*
+inline operator fun <reified T> Array<T>.plus(other : Array<T>) =
+    Array(this.size + other.size) {
+        if (it < this.size) this[it]
+        else other[it - this.size]
+    }
 
 
 fun main() {
 
+    val arr1 = arrayOf(1, 2, 3)
+    val arr2 = arrayOf(2, 3, 4)
 
+    for (s: Int in arr2 + arr1) {
+        println(s)
+    }
+
+    val m = mapOf(1 to 2, 2 to 3, 3 to 4, 4 to 5)
+    val n = mutableMapOf(1 to 2, 2 to 3, 3 to 4, 4 to 5)
 
 }
 
+class Kt (private val val1: Int) {
 
-class Kt {
-
-    var ty = 123
-    val rt = 456
-
-    fun sdf(a1 : Array<Int>) : Int {
-        val t = a1[0]
-
-        val func : () -> Int = {
-            val c1 = 5
-            c1 + 10
-        }
-
-
-        asdf(func)
-
-        asdf { 10 }
-
-        val q = Thread { println(123) }
-
-        val we : String = "3234234"
-        val wr : String? = null
-
-        if (wr != null) {
-            sdf1(wr)
-        }
-
-        sdf2(wr)
-        sdf2(we)
-
-        val  s = Scanner(System.`in`)
-
-        when (s.nextInt()) {
-            0 -> println(0)
-            1 -> println(1)
-            in 2..8 -> println(2)
-            else -> println(123)
-        }
-
-
-        return t
-    }
-
-    fun asdf(f : () -> Int) {
-        print(f())
-    }
-
-
-    fun sdf1(fg : String) {
-        print(fg.toLowerCase())
-    }
-
-    fun sdf2(fg : String?) {
-        if (fg != null) {
-            print(fg.toLowerCase())
-        }
-
+    operator fun minus(par1: Int) : Int {
+        println("INFIX CALLED")
+        return val1 + par1
     }
 
 }
-
