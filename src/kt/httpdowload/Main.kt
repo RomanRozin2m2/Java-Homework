@@ -1,5 +1,6 @@
 package kt.httpdowload
 
+import java.lang.StringBuilder
 import java.net.URL
 import java.util.ArrayList
 import java.util.regex.Pattern
@@ -7,6 +8,16 @@ import java.util.regex.Pattern
 
 val sites = "https://en.wikipedia.org/"
 
+
+
+fun ArrayList<String>.customToString(): String {
+    val result = StringBuilder()
+    for (value in this) {
+        result.append(value)
+        result.append("\n")
+    }
+    return result.toString()
+}
 
 fun getLinks(site: String): List<String> {
     val regex = "\"(https?://[^> ]*)\""
@@ -23,10 +34,6 @@ fun getLinks(site: String): List<String> {
 
 
 fun main() {
-    val connection = URL(sites).openConnection()
-    val site: String = connection.getInputStream().readAllBytes().toString(Charsets.UTF_8)
-
-    for (m in getLinks(site)) {
-        println(m)
-    }
+    val dataAnalyzer = WebDataAnalyzer()
+    println(dataAnalyzer.analyze("https://en.wikipedia.org", 25).customToString())
 }

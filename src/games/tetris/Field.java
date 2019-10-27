@@ -6,9 +6,6 @@ public class Field {
     public final int fieldWidth;
     boolean isCycled;
     boolean isNeedToUpdate;
-    int currRotation;
-    int possibleRotations;
-    int[][][] currFigure;
 
     public Field(int height, int width, boolean cycling){
         isCycled = cycling;
@@ -62,51 +59,6 @@ public class Field {
     }
 
     public boolean createBlock(){
-        Figure block = new Figure();
-
-        // Y is first index, X is second index!!!
-        currFigure = block.cells;
-
-        possibleRotations = block.cells.length;
-        currRotation = 0;
-
-        int[][] currFigure = this.currFigure[0];
-
-        int width, height;
-        width = currFigure[0].length;
-        height = currFigure.length;
-
-        int topLeftX = (fieldWidth - width) / 2;
-        int topLeftY = fieldHeight - 1;
-
-        int downLeftX = topLeftX;
-        int downLeftY = topLeftY - height + 1;
-
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                int currFieldX = downLeftX + x;
-                int currFieldY = downLeftY + y;
-
-                if (field[currFieldX][currFieldY].isFilled && currFigure[y][x] == 1) {
-                    return false;
-                }
-            }
-        }
-
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                int currFieldX = downLeftX + x;
-                int currFieldY = downLeftY + y;
-
-                if (currFigure[y][x] == 1) {
-                    field[currFieldX][currFieldY].setFilled(true);
-                    field[currFieldX][currFieldY].setFlying(true);
-                }
-            }
-        }
-
-        isNeedToUpdate = true;
-
         return true;
     }
 
@@ -318,96 +270,12 @@ public class Field {
         return ret;
     }
 
-    public void rotate(boolean doRotateNext){
-        //SEARCH
-        int topLeftX = fieldWidth - 1;
-        int topLeftY = 0;
-        int alreadyFound = 0;
+    public void turnClockwise(){
 
-        for (int x = 0; x < fieldWidth; x++){
-            for (int y = fieldHeight - 1; y >= 0; y--){
-                if (field[x][y].isFilled && field[x][y].isFlying) {
-                    if (x < topLeftX){
-                        topLeftX = x;
-                    }
-                    if (y > topLeftY){
-                        topLeftY = y;
-                    }
-                    alreadyFound++;
-                }
-            }
-        }
+    }
 
-        if (alreadyFound == 0) {
-            return;
-        }
+    public void turnAntiClockwise(){
 
-        //NEW FIGURE
-        int[][] rotatedFigure;
-        int oldRotation = currRotation;
-
-        if (doRotateNext) {
-            currRotation++;
-            if (currRotation >= possibleRotations) {
-                currRotation = 0;
-            }
-        }
-        else {
-            currRotation--;
-            if (currRotation < 0) {
-                currRotation = possibleRotations - 1;
-            }
-        }
-
-        rotatedFigure = currFigure[currRotation];
-
-        //CHECK
-        int width, height;
-        width = rotatedFigure[0].length;
-        height = rotatedFigure.length;
-
-        int downLeftX = topLeftX;
-        int downLeftY = topLeftY - height + 1;
-
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                int currFieldX = downLeftX + x;
-                int currFieldY = downLeftY + y;
-
-                if (field[currFieldX][currFieldY].isFilled &&
-                    !field[currFieldX][currFieldY].isFlying &&
-                    rotatedFigure[y][x] == 1) {
-
-                    currRotation = oldRotation;
-                    return;
-                }
-            }
-        }
-
-        //DELETE OLD
-        for (int x = 0; x < fieldWidth; x++) {
-            for (int y = 0; y < fieldHeight; y++) {
-                if (field[x][y].isFlying && field[x][y].isFilled){
-                    field[x][y].isFilled = false;
-                    field[x][y].isFlying = false;
-                }
-            }
-        }
-
-        //CREATE NEW
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                int currFieldX = downLeftX + x;
-                int currFieldY = downLeftY + y;
-
-                if (rotatedFigure[y][x] == 1) {
-                    field[currFieldX][currFieldY].isFlying = true;
-                    field[currFieldX][currFieldY].isFilled = true;
-                }
-            }
-        }
-
-        isNeedToUpdate = true;
     }
 
     public void drop(){
@@ -415,4 +283,7 @@ public class Field {
             advance();
         }
     }
+
+
+
 }
