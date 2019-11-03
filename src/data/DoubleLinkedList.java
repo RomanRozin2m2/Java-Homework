@@ -42,25 +42,21 @@ public class DoubleLinkedList<T> implements Serializable {
         return curNode.getValue();
     }
 
-    public void delCurValue(){
+    public void delCurValue() {
 
-        if(length == 1){
+        if (length == 1) {
             startNode = endNode = curNode = null;
-        }
-        else if(length == 0){
+        } else if(length == 0) {
             return;
-        }
-        else if(curNode == startNode) {
+        } else if(curNode == startNode) {
                 startNode = startNode.getNext();
                 curNode = startNode;
                 startNode.setPrev(null);
-        }
-        else if(curNode == endNode) {
+        } else if(curNode == endNode) {
             endNode = endNode.getPrev();
             curNode = endNode;
             endNode.setNext(null);
-        }
-        else {
+        } else {
             Node<T> previousNode = curNode.getPrev();
             Node<T> nextNode = curNode.getNext();
             previousNode.setNext(nextNode);

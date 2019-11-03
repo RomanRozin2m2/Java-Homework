@@ -35,5 +35,5 @@ fun getLinks(site: String): List<String> {
 
 fun main() {
     val dataAnalyzer = WebDataAnalyzer()
-    println(dataAnalyzer.analyze("https://en.wikipedia.org", 25).customToString())
+    dataAnalyzer.analyze("https://en.wikipedia.org/wiki/Main_Page", 5)
 }
