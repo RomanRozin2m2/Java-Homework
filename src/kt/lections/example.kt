@@ -1,5 +1,6 @@
 package kt.lections
 
+import sun.misc.Unsafe
 import java.lang.StringBuilder
 import java.net.URL
 import java.util.*
@@ -21,7 +22,7 @@ fun getAllRegEx(str: String, regex: String, group: Int): List<String> {
 
 
 fun getLinks(site: String): List<String> =
-        getAllRegEx(site, "\"(https?://[^ ?&=#\"]*)", 1)
+        getAllRegEx(site, "\"(https?://[^\"]*)\"", 1)
 
 
 fun getContent(url: String): String =
@@ -205,7 +206,7 @@ class Downloader(initial: String) {
                 println("??? ${nextSite.link}")
                 continue
             }
-            println("${nextSite.depth} ${counts.size} ${sitesQueue} ${nextSite.link}")
+            println("${nextSite.depth} ${counts.size} $sitesQueue ${nextSite.link}")
             println(content)
 
             val links = getLinks(content)
@@ -227,26 +228,43 @@ class Downloader(initial: String) {
 }
 
 
-class Node(var elem: Int) {
-    lateinit var next: Node
-    val lock = ReentrantLock()
+open class Node<T>(open var element: T) {
+    open lateinit var next: Node<T>
+    open val lock = ReentrantLock()
 }
 
-class ConcList {
-    private val start: Node = Node(Int.MIN_VALUE)
-    private val end: Node = Node(Int.MAX_VALUE)
+class EndNode(): Node<String>("") {
+    override var element = ""
+        get() {
+            throw Exception("Access to EndNode.element")
+        }
+    override var next: Node<String> = TODO()
+        get() {
+            throw Exception("Access to EndNode.next")
+        }
+    override val lock: ReentrantLock
+        get() {
+            throw Exception("Access to EndNode.lock")
+        }
+}
+
+class ConcurrentList {
+    private val start: Node<String> = Node(Character.MIN_VALUE.toString())
+    private val end: Node<String> = Node(Character.MAX_VALUE.toString())
+    var size = 2
+    private set
 
     init {
         start.next = end
     }
 
-    fun add(elem: Int) {
+    fun add(element: String) {
         var curr = start
         curr.lock.lock()
         curr.next.lock.lock()
         while (true) {
-            if (elem >= curr.elem && elem <= curr.next.elem) {
-                val node = Node(elem)
+            if (element >= curr.element && element <= curr.next.element) {
+                val node = Node(element)
                 node.lock.lock()
                 curr.next.lock.unlock()
                 node.next = curr.next
@@ -260,14 +278,15 @@ class ConcList {
         }
         curr.lock.unlock()
         curr.next.lock.unlock()
+        size++
     }
 
-    fun get(elem: Int): Int {
+    fun get(element: String): Int {
         var index = -1
         var curr = start
         curr.lock.lock()
         curr.next.lock.lock()
-        while (curr.elem != elem) {
+        while (curr.element != element) {
             val oldLock = curr.lock
             curr = curr.next
             oldLock.unlock()
@@ -279,12 +298,20 @@ class ConcList {
         return index
     }
 
-    fun remove(elem: Int): Boolean {
+    fun getNextFromStart(): String? {
+        val next = start.next
+        val result = (if (next == end) null else next) ?: return null
+        start.next = result.next
+        size--
+        return result.element
+    }
+
+    fun remove(element: String): Boolean {
         var curr = start
         curr.lock.lock()
         curr.next.lock.lock()
         var deleted = true
-        while (curr.next.elem != elem) {
+        while (curr.next.element != element) {
             if (curr.next === end) {
                 deleted = false
                 break
@@ -301,16 +328,27 @@ class ConcList {
         }
         curr.lock.unlock()
         curr.next.lock.unlock()
+        size--
         return deleted
     }
 
+    fun contains(element: String): Boolean {
+        var current = start.next
+        while (current != end) {
+            if (current.element == element) return true
+            current = current.next
+        }
+        return false
+    }
+
     override fun toString(): String {
+        if (size == 2) return "Empty"
         val builder = StringBuilder()
         var curr = start.next
         curr.lock.lock()
         curr.next.lock.lock()
         while (curr != end) {
-            builder.append(curr.elem)
+            builder.append(curr.element)
             builder.append(" ")
             val oldLock = curr.lock
             curr = curr.next
@@ -328,30 +366,61 @@ class ConcList {
 
 }
 
+class CAS {
+    val i = 5
+    private val unsafe = getUnsafeObject()
+    private val offset = getFieldOffset("i")
+
+    private fun getUnsafeObject(): Unsafe {
+        val field = Unsafe::class.java.getDeclaredField("theUnsafe")
+        field.trySetAccessible()
+        return field.get(null) as Unsafe
+    }
+
+    private fun getFieldOffset(field: String): Long {
+        return unsafe.objectFieldOffset(CAS::class.java.getDeclaredField(field))
+    }
+
+    fun increment() {
+        do {
+            val before = i
+        } while (!unsafe.compareAndSwapInt(this, offset, before, before + 1))
+    }
+}
+
 fun main(args: Array<String>) {
-    val list = ConcList()
-    val threads = ArrayList<Thread>()
-    repeat(5) {
-        threads.add(Thread {
-            val random = Random()
-            repeat(1000) {
-                list.add(random.nextInt(1000))
+    val cas = CAS()
+    println(cas.i)
+    cas.increment()
+    println(cas.i)
+    val list = ConcurrentList()
+    val workingThreads = 5
+    val startLink = "https://en.wikipedia.org/wiki/Main_Page"
+    val content = getContent(startLink)
+    for (link in getLinks(content)) {
+        println(link)
+        if (!list.contains(link)) {
+            println("added")
+            list.add(link)
+        }
+    }
+    list.add(startLink)
+    val threads = Array(workingThreads) {
+        Thread {
+            while (true) {
+                val next = list.getNextFromStart()
+                if (next == null) {
+                    println("null")
+                    continue
+                } else println(next)
+                val links = getLinks(getContent(next))
+                for (link in links) {
+                    if (!list.contains(link)) {
+                        list.add(link)
+                    }
+                }
             }
-        })
+        }
     }
-    repeat(20) {
-        threads.add(Thread {
-            val random = Random()
-            repeat(1000) {
-                list.remove(random.nextInt(1000))
-            }
-        })
-    }
-    threads.forEach {
-        it.start()
-    }
-    threads.forEach {
-        it.join()
-    }
-    println(list)
+    threads.forEach { it.start() }
 }
